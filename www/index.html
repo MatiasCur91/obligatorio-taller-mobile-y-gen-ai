@@ -1,11 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>MovieList</title>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <style>
+        #map {
+            height: 100%;
+        }
+    </style>
+    <link href="css/estilos.css" rel="stylesheet">
 </head>
+
 <body>
-    
+    <ion-app>
+
+        <!-- COMPONENTE DE RUTEO -->
+
+        <ion-router id="ruteo">
+            <ion-route url="/" component="page-home"></ion-route>
+            <ion-route url="/registro" component="page-registro"></ion-route>
+            <ion-route url="/login" component="page-login"></ion-route>
+            <ion-route url="/productos" component="page-productos"></ion-route>
+            <ion-route url="/mapa" component="page-mapa"></ion-route>
+        </ion-router>
+        <ion-nav></ion-nav>
+
+
+
+        <!-- MENU -->
+        <ion-menu side="start" menu-id="first" content-id="main" id="menu">
+            <ion-header>
+                <ion-toolbar color="primary">
+                    <ion-title>Menu</ion-title>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content>
+                <ion-list id="menu-opciones">
+
+
+                </ion-list>
+            </ion-content>
+
+        </ion-menu>
+        <div id="main"></div>
+
+        <!-- FIN MENU -->
+
+
+        <!-- PAGINAS -->
+        <page-home class="ion-page" id="pantalla-home">
+            <ion-header>
+                <ion-toolbar id="ion-toolbar">
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    <ion-title>HOME</ion-title>
+                    <ion-thumbnail slot="end">
+  <img alt="logo" id="logo-navbar" src="img/logo.png" />
+</ion-thumbnail>
+
+                </ion-toolbar>
+            </ion-header>
+            <ion-content>
+        
+                <ion-img src="img/logo-letras.png" alt="logo-letras"></ion-img>
+                
+                <div id="botones-home">
+
+                </div>
+                
+        
+        
+            </ion-content>
+        </page-home>
+
+
+
+        <page-registro class="ion-page" id="pantalla-registro">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    <ion-title>Registro</ion-title>
+                    <ion-thumbnail slot="end">
+  <img alt="logo" id="logo-navbar" src="img/logo.png" />
+</ion-thumbnail>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content>
+
+                <ion-item>
+                    <ion-input id="txtRegistroUsuario" label="Usuario" label-placement="floating"
+                        placeholder="Ingrese Usuario"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                    <ion-input id="txtRegistroPassword" type="Password" label="Password" label-placement="floating"
+                        placeholder="Ingrese Password"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                    <ion-select id="slcRegistroPais" label="País" label-placement="floating">
+                        
+                    </ion-select>
+                </ion-item>
+
+
+                <ion-button id="btnRegistro" expand="full">Registrar</ion-button>
+
+
+            </ion-content>
+        </page-registro>
+
+
+        <page-login class="ion-page" id="pantalla-login">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    <ion-title>Login</ion-title>
+                    <ion-thumbnail slot="end">
+  <img alt="logo" id="logo-navbar" src="img/logo.png" />
+</ion-thumbnail>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content>
+                <ion-list>
+
+
+                    <ion-item>
+                        <ion-input id="txtLoginUsuario" value="movielist" label="Usuario"
+                            label-placement="floating" placeholder="Ingrese usuario"></ion-input>
+                    </ion-item>
+
+                    <ion-item>
+                        <ion-input id="txtLoginPassword" value="movielist" type="Password" label="Password"
+                            label-placement="floating" placeholder="Ingrese Password"></ion-input>
+                    </ion-item>
+                    <ion-button id="btnLogin" expand="full">Login</ion-button>
+
+                </ion-list>
+
+            </ion-content>
+        </page-login>
+
+
+
+        <page-productos class="ion-page" id="pantalla-productos">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    <ion-title>Peliculas</ion-title>
+                    <ion-thumbnail slot="end">
+  <img alt="logo" id="logo-navbar" src="img/logo.png" />
+</ion-thumbnail>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content>
+               
+                <ion-button id="btnAgregar" expand="full">Agregar pelicula</ion-button>
+                <ion-button id="btnEstadisticas" expand="full">Estadisticas</ion-button>
+                <ion-item>
+                    <ion-select label="Fecha" placeholder="Todas">
+                        <ion-select-option value="todas">Todas</ion-select-option>
+                        <ion-select-option value="ultimo-mes">Último mes</ion-select-option>
+                        <ion-select-option value="ultima-semana">Última semana</ion-select-option>
+                    </ion-select>
+                </ion-item>
+                <div id="lista-productos">
+                
+                </div>
+                <div style="height: 50px;"></div>
+            </ion-content>
+
+          
+        </page-productos>
+
+
+
+        <page-mapa class="ion-page" id="pantalla-mapa">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    <ion-title>Mapa</ion-title>
+                    <ion-thumbnail slot="end">
+  <img alt="logo" id="logo-navbar" src="img/logo.png" />
+</ion-thumbnail>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content>
+               <div id="map"></div>
+            </ion-content>
+        </page-mapa>
+
+
+    </ion-app>
+    <script src="js/codigo.js"></script>
 </body>
+
 </html>
