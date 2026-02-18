@@ -480,8 +480,14 @@ async function TomarDatosPalicula() {
     let nombre = document.querySelector("#txtNombrePelicula").value;
     let fecha = document.querySelector("#txtFechaPelicula").value;
     let categoria = Number(document.querySelector("#slcCategoria").value);
+    let comentario = document.querySelector("#txtComentarioPelicula").value;
 
-    if (DatosPeliculaValidos(nombre, fecha, categoria)) {
+    if (!EvaluarComentario(comentario)) {
+        Alertar("Comentario inválido", "Agregar película", "No se pueden agregar películas con comentarios negativos.")
+        return;
+    }
+
+    if (DatosPeliculaValidos(nombre, fecha, categoria,)) {
 
         AgregarPelicula(nombre, fecha, categoria);
 
@@ -501,6 +507,32 @@ function DatosPeliculaValidos(nombre, fecha, categoria) {
     }
 
     return true;
+}
+
+async function EvaluarComentario(comentario){
+    let response = await fetch(`${URL_BASE}genai`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            
+        },
+        body: JSON.stringify({
+            prompt: comentario,
+        })
+    });
+
+    if (response.status == 200) {
+        let data = await response.json();
+        console.log("Sentimiento del comentario:", data.sentiment);
+    } else {
+        return null;
+    }
+
+    if(data.sentiment == "Negativo"){
+        return false;
+    } else {
+        return true;
+    }
 }
 
 async function AgregarPelicula(nombre, fecha, categoria) {
