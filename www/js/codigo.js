@@ -22,15 +22,15 @@ function Inicio() {
 
 }
 
-function CargarMapa(){
+function CargarMapa() {
 
-    setTimeout(function(){CrearMapa()},1000)
+    setTimeout(function () { CrearMapa() }, 1000)
 }
 
 var map = null;
 function CrearMapa() {
 
-    if(map != null){
+    if (map != null) {
         map.remove();
     }
 
@@ -55,11 +55,11 @@ function CrearMapa() {
 
 
     var polygon = L.polygon([
-    [-34.887232060982285, -56.15921630560929],
-    [-34.887576590810674, -56.171412955505495],
-    [-34.904852295863385, -56.169276573751084],
-    [-34.89723693213823, -56.14666147277048]
-]).addTo(map);
+        [-34.887232060982285, -56.15921630560929],
+        [-34.887576590810674, -56.171412955505495],
+        [-34.904852295863385, -56.169276573751084],
+        [-34.89723693213823, -56.14666147277048]
+    ]).addTo(map);
 
 }
 
@@ -133,8 +133,8 @@ function Eventos() {
     ROUTER.addEventListener('ionRouteDidChange', Navegar)
     document.querySelector("#btnLogin").addEventListener('click', TomarDatosLogin)
     document.querySelector("#btnRegistro").addEventListener('click', TomarDatosRegistro)
-    document.querySelector("#fecha").addEventListener("ionChange", () => {ListarPeliculas();});
-   
+    document.querySelector("#fecha").addEventListener("ionChange", () => { ListarPeliculas(); });
+
 }
 
 async function TomarDatosLogin() {
@@ -308,6 +308,7 @@ function Navegar(evt) {
         ArmarSelectCategorias();
     } else if (ruta == "/estadisticas") {
         ESTADISTICAS.style.display = "block";
+        CargarEstadisticas();
     }
 
 
@@ -324,7 +325,7 @@ function OcultarPantallas() {
     MAPA.style.display = "none";
     AGREGAR_PELICULA.style.display = "none";
     ESTADISTICAS.style.display = "none";
-    
+
 }
 async function ListarPeliculas() {
 
@@ -338,7 +339,7 @@ async function ListarPeliculas() {
     if (!periodo) {
         periodo = "todas";
     }
-console.log("Periodo seleccionado:", periodo);
+    console.log("Periodo seleccionado:", periodo);
 
     if (periodo === "ultima-semana") {
 
@@ -380,7 +381,7 @@ console.log("Periodo seleccionado:", periodo);
     console.log("Películas recibidas:");
     for (let p of listaP) {
         console.log(p.nombre, p.fechaEstreno);
-    
+
         let categoria = categorias.find(c => c.id == p.idCategoria);
 
         html += `<ion-card>
@@ -399,12 +400,6 @@ console.log("Periodo seleccionado:", periodo);
 
     document.querySelector("#lista-peliculas").innerHTML = html;
 }
-
-
-
-
-
-
 
 
 
@@ -481,7 +476,7 @@ async function ArmarSelectCategorias() {
     }
 }
 
-async function TomarDatosPalicula(){
+async function TomarDatosPalicula() {
     let nombre = document.querySelector("#txtNombrePelicula").value;
     let fecha = document.querySelector("#txtFechaPelicula").value;
     let categoria = Number(document.querySelector("#slcCategoria").value);
@@ -510,7 +505,7 @@ function DatosPeliculaValidos(nombre, fecha, categoria) {
 
 async function AgregarPelicula(nombre, fecha, categoria) {
 
-   // MostrarLoader("Agregando película")
+    // MostrarLoader("Agregando película")
 
     let token = localStorage.getItem("token");
 
@@ -531,17 +526,17 @@ async function AgregarPelicula(nombre, fecha, categoria) {
     if (response.status == 200) {
         let data = await response.json();
         MostrarToast("Alta correcta", 3000)
-        Navegar({detail: {to: "/peliculas"}});
+        Navegar({ detail: { to: "/peliculas" } });
 
-        
+
         return data.peliculas;
     } else {
         return null;
     }
 
-   // ApagarLoader();
+    // ApagarLoader();
 }
-       
+
 
 async function EliminarPelicula(idp) {
 
@@ -561,7 +556,7 @@ async function EliminarPelicula(idp) {
     if (response.status == 200) {
         let data = await response.json();
         MostrarToast("Pelicula eliminada correctamente", 3000);
-        Navegar({detail: {to: "/peliculas"}}); // Forzar recarga de la lista de películas
+        Navegar({ detail: { to: "/peliculas" } }); // Forzar recarga de la lista de películas
         return data.peliculas;
     } else {
         return null;
@@ -569,8 +564,115 @@ async function EliminarPelicula(idp) {
 
 }
 
+//ESTADISTICAS
+
+async function CargarEstadisticas() {
+
+    MostrarLoader("Cargando estadísticas...")
+
+    let peliculas = await ObtenerPeliculas();
+    let categorias = await ObtenerCategorias();
+
+    if (!peliculas || !categorias) {
+        console.error("Error cargando datos");
+        return;
+    }
+
+    EstadisticasPorCategoria(peliculas, categorias);
+    EstadisticasPorEdad(peliculas, categorias);
+    ApagarLoader();
+}
+
+function EstadisticasPorCategoria(peliculas, categorias) {
+
+    let conteo = {};
+
+    for (let p of peliculas) {
+        let idCat = p.idCategoria;
+
+        if (conteo[idCat]) {
+            conteo[idCat]++;
+        } else {
+            conteo[idCat] = 1;
+        }
+    }
+
+    let html = `<ion-list>
+  <ion-list-header>
+    <ion-label>Películas por categoría</ion-label>
+  </ion-list-header>`;
+
+    for (let c of categorias) {
+        let cantidad = conteo[c.id] || 0;
+
+        html += `
+            <ion-item>
+                <ion-label>
+                    ${c.nombre}
+                </ion-label>
+                <ion-badge slot="end">${cantidad}</ion-badge>
+            </ion-item>
+        `;
+    }
+
+    html += `</ion-list>`;
+
+    document.querySelector("#stats-categorias").innerHTML = html;
+}
+function EstadisticasPorEdad(peliculas, categorias) {
+
+    let mayores12 = 0;
+    let resto = 0;
+
+    for (let p of peliculas) {
+        let categoria = null;
+
+        for (let c of categorias) {
+            if (c.id == p.idCategoria) {
+                categoria = c;
+                break;
+            }
+        }
+
+        if (!categoria) continue;
+
+        if (categoria.edad_requerida > 12) {
+            mayores12++;
+        } else {
+            resto++;
+        }
+    }
+
+    let total = mayores12 + resto;
+
+    let porcentajeMayores = 0;
+    let porcentajeResto = 0;
+
+    if (total > 0) {
+        porcentajeMayores = Math.round((mayores12 * 100) / total);
+        porcentajeResto = Math.round((resto * 100) / total);
+    }
+
+    let html = `
+        <ion-card>
+            <ion-card-header>
+                <ion-card-title>Estadísticas por Edad</ion-card-title>
+                <ion-card-subtitle>Mayores de 12 años vs Resto</ion-card-subtitle>
+            </ion-card-header>
+            <ion-card-content>
+                <p>Mayores de 12 años: <strong>${porcentajeMayores}%</strong></p>
+                <p>Resto: <strong>${porcentajeResto}%</strong></p>
+            </ion-card-content>
+        </ion-card>
+    `;
 
 
+
+    document.querySelector("#stats-edad").innerHTML = html;
+}
+
+
+//LOADER
 
 const loading = document.createElement('ion-loading');
 
