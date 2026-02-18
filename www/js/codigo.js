@@ -384,7 +384,7 @@ async function ListarPeliculas() {
 
         let categoria = categorias.find(c => c.id == p.idCategoria);
 
-        html += `<ion-card>
+        html += `<ion-card color="dark">
             <ion-card-header>
                 <ion-card-title>${p.nombre}</ion-card-title>
             </ion-card-header>
@@ -393,7 +393,7 @@ async function ListarPeliculas() {
                 Fecha de estreno: ${p.fechaEstreno}<br>
                 Categoría: ${categoria ? categoria.nombre : "Sin categoría"} ${categoria ? categoria.emoji : ""}<br>
                 Edad requerida: ${categoria ? categoria.edad_requerida : "-"} años
-                <ion-button slot="end" shape="round" onclick="EliminarPelicula('${p.id}')">Eliminar</ion-button>
+                <ion-button color="primary" slot="end" shape="round" onclick="EliminarPelicula('${p.id}')">Eliminar</ion-button>
             </ion-card-content>
         </ion-card>`;
     }
@@ -654,7 +654,7 @@ function EstadisticasPorEdad(peliculas, categorias) {
     }
 
     let html = `
-        <ion-card>
+        <ion-card color="dark">
             <ion-card-header>
                 <ion-card-title>Estadísticas por Edad</ion-card-title>
                 <ion-card-subtitle>Mayores de 12 años vs Resto</ion-card-subtitle>
@@ -677,9 +677,7 @@ function EstadisticasPorEdad(peliculas, categorias) {
 const loading = document.createElement('ion-loading');
 
 function MostrarLoader(texto) {
-    loading.cssClass = 'my-custom-class';
     loading.message = texto;
-    //loading.duration = 2000;
     document.body.appendChild(loading);
     loading.present();
 }
@@ -693,7 +691,7 @@ function ApagarLoader() {
 
 function Alertar(titulo, subtitulo, mensaje) {
     const alert = document.createElement('ion-alert');
-    alert.cssClass = 'my-custom-class';
+
     alert.header = titulo;
     alert.subHeader = subtitulo;
     alert.message = mensaje;

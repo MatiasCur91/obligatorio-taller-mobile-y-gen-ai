@@ -24,7 +24,7 @@
     <link href="css/estilos.css" rel="stylesheet">
 </head>
 
-<body>
+<body class="dark">
     <ion-app>
 
         <!-- COMPONENTE DE RUTEO -->
@@ -46,8 +46,8 @@
         <!-- MENU -->
         <ion-menu side="start" menu-id="first" content-id="main" id="menu">
             <ion-header>
-                <ion-toolbar color="primary">
-                    <ion-title>Menu</ion-title>
+                <ion-toolbar class="ion-no-border" color="dark" id="ion-toolbar">
+                    <ion-title>MENU</ion-title>
                 </ion-toolbar>
             </ion-header>
             <ion-content>
@@ -66,8 +66,8 @@
         <!-- PAGINAS -->
         <page-home class="ion-page" id="pantalla-home">
             <ion-header>
-                <ion-toolbar id="ion-toolbar">
-                    <ion-buttons slot="start">
+                <ion-toolbar class="ion-no-border" color="dark" id="ion-toolbar">
+                    <ion-buttons color="primary" slot="start">
                         <ion-menu-button></ion-menu-button>
                     </ion-buttons>
                     <ion-title>HOME</ion-title>
@@ -94,11 +94,11 @@
 
         <page-registro class="ion-page" id="pantalla-registro">
             <ion-header>
-                <ion-toolbar>
-                    <ion-buttons slot="start">
+                <ion-toolbar class="ion-no-border" color="dark" id="ion-toolbar">
+                    <ion-buttons color="primary" slot="start">
                         <ion-menu-button></ion-menu-button>
                     </ion-buttons>
-                    <ion-title>Registro</ion-title>
+                    <ion-title>REGISTRO</ion-title>
                     <ion-thumbnail slot="end">
                         <img alt="logo" id="logo-navbar" src="img/logo.png" />
                     </ion-thumbnail>
@@ -117,13 +117,14 @@
                 </ion-item>
 
                 <ion-item>
-                    <ion-select id="slcRegistroPais" label="País" label-placement="floating">
-
+                    <ion-select id="slcRegistroPais" label="País" label-placement="floating" interface="alert"
+                        mode="md">
                     </ion-select>
+
                 </ion-item>
 
 
-                <ion-button id="btnRegistro" expand="full">Registrar</ion-button>
+                <ion-button color="primary" id="btnRegistro" expand="full">Registrar</ion-button>
 
 
             </ion-content>
@@ -132,11 +133,11 @@
 
         <page-login class="ion-page" id="pantalla-login">
             <ion-header>
-                <ion-toolbar>
-                    <ion-buttons slot="start">
+                <ion-toolbar class="ion-no-border" color="dark" id="ion-toolbar">
+                    <ion-buttons color="primary" slot="start">
                         <ion-menu-button></ion-menu-button>
                     </ion-buttons>
-                    <ion-title>Login</ion-title>
+                    <ion-title>LOGIN</ion-title>
                     <ion-thumbnail slot="end">
                         <img alt="logo" id="logo-navbar" src="img/logo.png" />
                     </ion-thumbnail>
@@ -155,7 +156,7 @@
                         <ion-input id="txtLoginPassword" value="movielist" type="Password" label="Password"
                             label-placement="floating" placeholder="Ingrese Password"></ion-input>
                     </ion-item>
-                    <ion-button id="btnLogin" expand="full">Login</ion-button>
+                    <ion-button color="primary" id="btnLogin" expand="full">Login</ion-button>
 
                 </ion-list>
 
@@ -166,11 +167,11 @@
 
         <page-peliculas class="ion-page" id="pantalla-peliculas">
             <ion-header>
-                <ion-toolbar>
-                    <ion-buttons slot="start">
+                <ion-toolbar class="ion-no-border" color="dark" id="ion-toolbar">
+                    <ion-buttons color="primary" slot="start">
                         <ion-menu-button></ion-menu-button>
                     </ion-buttons>
-                    <ion-title>Peliculas</ion-title>
+                    <ion-title>PELICULAS</ion-title>
                     <ion-thumbnail slot="end">
                         <img alt="logo" id="logo-navbar" src="img/logo.png" />
                     </ion-thumbnail>
@@ -204,11 +205,11 @@
 
         <page-agregar-pelicula class="ion-page" id="pantalla-agregar-pelicula">
             <ion-header>
-                <ion-toolbar>
-                    <ion-buttons slot="start">
+                <ion-toolbar class="ion-no-border" color="dark" id="ion-toolbar">
+                    <ion-buttons color="primary" slot="start">
                         <ion-menu-button></ion-menu-button>
                     </ion-buttons>
-                    <ion-title>Agregar Pelicula</ion-title>
+                    <ion-title>AGREGAR PELICULA</ion-title>
                     <ion-thumbnail slot="end">
                         <img alt="logo" id="logo-navbar" src="img/logo.png" />
                     </ion-thumbnail>
@@ -227,13 +228,15 @@
                 </ion-item>
 
                 <ion-item>
-                    <ion-select id="slcCategoria" label="Categoría" label-placement="floating">
-
+                    <ion-select id="slcCategoria" label="Categoría" label-placement="floating" interface="alert"
+                        mode="md">
                     </ion-select>
+
                 </ion-item>
 
 
-                <ion-button id="btnRegistrarPelicula" onclick="TomarDatosPalicula()" expand="full">Agregar</ion-button>
+                <ion-button color="primary" id="btnRegistrarPelicula" onclick="TomarDatosPalicula()"
+                    expand="full">Agregar</ion-button>
 
 
             </ion-content>
@@ -242,17 +245,17 @@
 
         <page-estadisticas class="ion-page" id="pantalla-estadisticas">
             <ion-header>
-                <ion-toolbar>
-                    <ion-buttons slot="start">
+                <ion-toolbar class="ion-no-border" color="dark" id="ion-toolbar">
+                    <ion-buttons color="primary" slot="start">
                         <ion-menu-button></ion-menu-button>
                     </ion-buttons>
-                    <ion-title>Estadísticas</ion-title>
+                    <ion-title>ESTADISTICAS</ion-title>
                 </ion-toolbar>
             </ion-header>
 
             <ion-content style="--padding-bottom: 80px;">
 
-                
+
                 <div id="stats-categorias"></div>
 
                 <ion-divider></ion-divider>
@@ -264,11 +267,11 @@
 
         <page-mapa class="ion-page" id="pantalla-mapa">
             <ion-header>
-                <ion-toolbar>
-                    <ion-buttons slot="start">
+                <ion-toolbar class="ion-no-border" color="dark" id="ion-toolbar">
+                    <ion-buttons color="primary" slot="start">
                         <ion-menu-button></ion-menu-button>
                     </ion-buttons>
-                    <ion-title>Mapa</ion-title>
+                    <ion-title>MAPA</ion-title>
                     <ion-thumbnail slot="end">
                         <img alt="logo" id="logo-navbar" src="img/logo.png" />
                     </ion-thumbnail>
@@ -280,7 +283,7 @@
         </page-mapa>
 
         <ion-footer id="footer">
-            <ion-tab-bar slot="bottom">
+            <ion-tab-bar color="dark" slot="bottom">
 
                 <ion-tab-button onclick="Navegar({ detail: { to: '/' } })">
                     <ion-icon name="home-outline"></ion-icon>
