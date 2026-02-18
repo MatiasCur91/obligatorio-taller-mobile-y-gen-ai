@@ -33,8 +33,11 @@
             <ion-route url="/" component="page-home"></ion-route>
             <ion-route url="/registro" component="page-registro"></ion-route>
             <ion-route url="/login" component="page-login"></ion-route>
-            <ion-route url="/productos" component="page-productos"></ion-route>
+            <ion-route url="/peliculas" component="page-peliculas"></ion-route>
             <ion-route url="/mapa" component="page-mapa"></ion-route>
+            <ion-route url="/agregar-pelicula" component="page-agregar-pelicula"></ion-route>
+            <ion-route url="/estadisticas" component="page-estadisticas"></ion-route>
+
         </ion-router>
         <ion-nav></ion-nav>
 
@@ -69,21 +72,21 @@
                     </ion-buttons>
                     <ion-title>HOME</ion-title>
                     <ion-thumbnail slot="end">
-  <img alt="logo" id="logo-navbar" src="img/logo.png" />
-</ion-thumbnail>
+                        <img alt="logo" id="logo-navbar" src="img/logo.png" />
+                    </ion-thumbnail>
 
                 </ion-toolbar>
             </ion-header>
             <ion-content>
-        
-                <ion-img src="img/logo-letras.png" alt="logo-letras"></ion-img>
-                
+
+                <ion-img src="img/movielist.webp" alt="logo-letras"></ion-img>
+
                 <div id="botones-home">
 
                 </div>
-                
-        
-        
+
+
+
             </ion-content>
         </page-home>
 
@@ -97,8 +100,8 @@
                     </ion-buttons>
                     <ion-title>Registro</ion-title>
                     <ion-thumbnail slot="end">
-  <img alt="logo" id="logo-navbar" src="img/logo.png" />
-</ion-thumbnail>
+                        <img alt="logo" id="logo-navbar" src="img/logo.png" />
+                    </ion-thumbnail>
                 </ion-toolbar>
             </ion-header>
             <ion-content>
@@ -115,7 +118,7 @@
 
                 <ion-item>
                     <ion-select id="slcRegistroPais" label="País" label-placement="floating">
-                        
+
                     </ion-select>
                 </ion-item>
 
@@ -135,8 +138,8 @@
                     </ion-buttons>
                     <ion-title>Login</ion-title>
                     <ion-thumbnail slot="end">
-  <img alt="logo" id="logo-navbar" src="img/logo.png" />
-</ion-thumbnail>
+                        <img alt="logo" id="logo-navbar" src="img/logo.png" />
+                    </ion-thumbnail>
                 </ion-toolbar>
             </ion-header>
             <ion-content>
@@ -144,8 +147,8 @@
 
 
                     <ion-item>
-                        <ion-input id="txtLoginUsuario" value="movielist" label="Usuario"
-                            label-placement="floating" placeholder="Ingrese usuario"></ion-input>
+                        <ion-input id="txtLoginUsuario" value="movielist" label="Usuario" label-placement="floating"
+                            placeholder="Ingrese usuario"></ion-input>
                     </ion-item>
 
                     <ion-item>
@@ -161,7 +164,7 @@
 
 
 
-        <page-productos class="ion-page" id="pantalla-productos">
+        <page-peliculas class="ion-page" id="pantalla-peliculas">
             <ion-header>
                 <ion-toolbar>
                     <ion-buttons slot="start">
@@ -169,31 +172,97 @@
                     </ion-buttons>
                     <ion-title>Peliculas</ion-title>
                     <ion-thumbnail slot="end">
-  <img alt="logo" id="logo-navbar" src="img/logo.png" />
-</ion-thumbnail>
+                        <img alt="logo" id="logo-navbar" src="img/logo.png" />
+                    </ion-thumbnail>
                 </ion-toolbar>
             </ion-header>
             <ion-content>
-               
-                <ion-button id="btnAgregar" expand="full">Agregar pelicula</ion-button>
-                <ion-button id="btnEstadisticas" expand="full">Estadisticas</ion-button>
+
                 <ion-item>
-                    <ion-select label="Fecha" placeholder="Todas">
-                        <ion-select-option value="todas">Todas</ion-select-option>
-                        <ion-select-option value="ultimo-mes">Último mes</ion-select-option>
-                        <ion-select-option value="ultima-semana">Última semana</ion-select-option>
-                    </ion-select>
+                    <ion-segment id="fecha">
+                        <ion-segment-button value="todas">
+                            <ion-label>Todas</ion-label>
+                        </ion-segment-button>
+
+                        <ion-segment-button value="ultimo-mes">
+                            <ion-label>Mes</ion-label>
+                        </ion-segment-button>
+
+                        <ion-segment-button value="ultima-semana">
+                            <ion-label>Semana</ion-label>
+                        </ion-segment-button>
+                    </ion-segment>
+
                 </ion-item>
-                <div id="lista-productos">
-                
+                <div id="lista-peliculas">
+
                 </div>
                 <div style="height: 50px;"></div>
             </ion-content>
 
-          
-        </page-productos>
+
+        </page-peliculas>
+
+        <page-agregar-pelicula class="ion-page" id="pantalla-agregar-pelicula">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    <ion-title>Agregar Pelicula</ion-title>
+                    <ion-thumbnail slot="end">
+                        <img alt="logo" id="logo-navbar" src="img/logo.png" />
+                    </ion-thumbnail>
+                </ion-toolbar>
+            </ion-header>
+            <ion-content>
+
+                <ion-item>
+                    <ion-input id="txtNombrePelicula" label="Nombre de la Película" label-placement="floating"
+                        placeholder="Ingrese nombre de la película"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                    <ion-input id="txtFechaPelicula" type="date" label="Fecha" label-placement="floating"
+                        placeholder="Ingrese fecha"></ion-input>
+                </ion-item>
+
+                <ion-item>
+                    <ion-select id="slcCategoria" label="Categoría" label-placement="floating">
+
+                    </ion-select>
+                </ion-item>
 
 
+                <ion-button id="btnRegistrarPelicula" onclick="TomarDatosPalicula()" expand="full">Agregar</ion-button>
+
+
+            </ion-content>
+
+        </page-agregar-pelicula>
+
+        <page-estadisticas class="ion-page" id="pantalla-estadisticas">
+            <ion-header>
+                <ion-toolbar>
+                    <ion-buttons slot="start">
+                        <ion-menu-button></ion-menu-button>
+                    </ion-buttons>
+                    <ion-title>Estadísticas</ion-title>
+                </ion-toolbar>
+            </ion-header>
+
+            <ion-content class="ion-padding">
+
+                <h2>Películas por categoría</h2>
+                <div id="stats-categorias"></div>
+
+                <ion-divider></ion-divider>
+
+                <h2>Clasificación por edad</h2>
+                <div id="stats-edad"></div>
+
+            </ion-content>
+        </page-estadisticas>
 
         <page-mapa class="ion-page" id="pantalla-mapa">
             <ion-header>
@@ -203,14 +272,45 @@
                     </ion-buttons>
                     <ion-title>Mapa</ion-title>
                     <ion-thumbnail slot="end">
-  <img alt="logo" id="logo-navbar" src="img/logo.png" />
-</ion-thumbnail>
+                        <img alt="logo" id="logo-navbar" src="img/logo.png" />
+                    </ion-thumbnail>
                 </ion-toolbar>
             </ion-header>
             <ion-content>
-               <div id="map"></div>
+                <div id="map"></div>
             </ion-content>
         </page-mapa>
+
+        <ion-footer id="footer">
+            <ion-tab-bar slot="bottom">
+
+                <ion-tab-button onclick="Navegar({ detail: { to: '/' } })">
+                    <ion-icon name="home-outline"></ion-icon>
+                    <ion-label>Home</ion-label>
+                </ion-tab-button>
+
+                <ion-tab-button onclick="Navegar({ detail: { to: '/peliculas' } })">
+                    <ion-icon name="film-outline"></ion-icon>
+                    <ion-label>Películas</ion-label>
+                </ion-tab-button>
+
+                <ion-tab-button onclick="Navegar({ detail: { to: '/agregar-pelicula' } })">
+                    <ion-icon name="add-circle-outline"></ion-icon>
+                    <ion-label>Agregar</ion-label>
+                </ion-tab-button>
+
+                <ion-tab-button onclick="Navegar({ detail: { to: '/estadisticas' } })">
+                    <ion-icon name="stats-chart-outline"></ion-icon>
+                    <ion-label>Estadisticas</ion-label>
+                </ion-tab-button>
+
+                <ion-tab-button onclick="Navegar({ detail: { to: '/mapa' } })">
+                    <ion-icon name="map-outline"></ion-icon>
+                    <ion-label>Mapa</ion-label>
+                </ion-tab-button>
+
+            </ion-tab-bar>
+        </ion-footer>
 
 
     </ion-app>
