@@ -138,14 +138,37 @@ function Eventos() {
 }
 
 async function TomarDatosLogin() {
-    let us = document.querySelector("#txtLoginUsuario").value;
-    let ps = document.querySelector("#txtLoginPassword").value;
+    let usuario = document.querySelector("#txtLoginUsuario").value;
+    let password = document.querySelector("#txtLoginPassword").value;
+
+    MostrarLoader("Iniciando sesión");
+    if (DatosValidosLogin(usuario, password)) {
+
+        Login(usuario, password);
+        ApagarLoader();
+    } else {
+        ApagarLoader();
+        Alertar("Datos inválidos", "Login de usuario", "Revise que los datos ingresados sean correctos. Usuario y password no pueden contener espacios, el password debe tener al menos 6 caracteres y el usuario al menos 3 caracteres.")
+    }
+
+}
+
+function DatosValidosLogin(u, ps) {
+    if (ps.length < 6 || u.length < 3 || u.includes(" ") || ps.includes(" ") || u == null || ps == null) {
+        return false;
+    }
+
+    return true;
+}
+
+async function Login(usuario, password) {
 
     let login = new Object();
-    login.usuario = us;
-    login.password = ps;
+    login.usuario = usuario;
+    login.password = password;
 
-    MostrarLoader("Iniciando sesión")
+
+
     let response = await fetch(`${URL_BASE}login`, {
         method: 'POST',
         headers: {
@@ -164,7 +187,7 @@ async function TomarDatosLogin() {
         ArmarFooter();
         NAV.push("page-home")
     }
-    ApagarLoader();
+
 }
 
 async function ArmarSelectPaises() {
@@ -218,7 +241,7 @@ async function TomarDatosRegistro() {
     let p = Number(document.querySelector("#slcRegistroPais").value);
 
 
-    if (DatosValidos(u, ps, p)) {
+    if (DatosValidosRegistro(u, ps, p)) {
 
         RegistrarUsuario(u, ps, p)
 
@@ -251,18 +274,14 @@ async function RegistrarUsuario(u, ps, p) {
     if (response.status == 200) {
 
         MostrarToast("Alta correcta", 3000)
+        Login(u, ps);
 
-    } else if (response.status == 409) {
-
-        Alertar("Usuario existente",
-            "Registro",
-            "El nombre de usuario ya está en uso. Intente con otro.")
     }
     else {
 
         let data = await response.json();
 
-        Alertar("ERROR", "Alta de usuario", data.error)
+        Alertar("ERROR", "Alta de usuario", data.mensaje)
     }
 
     ApagarLoader();
@@ -271,7 +290,7 @@ async function RegistrarUsuario(u, ps, p) {
 
 
 
-function DatosValidos(u, ps, p) {
+function DatosValidosRegistro(u, ps, p) {
     if (!p || isNaN(p) || ps.length < 6 || u.length < 3 || u.includes(" ") || ps.includes(" ") || u == null || ps == null) {
         return false;
     }
@@ -376,27 +395,35 @@ async function ListarPeliculas() {
         listaP = peliculasUltimoMes;
     }
 
-    let html = ``;
+    let html = `<ion-list>`;
 
-    console.log("Películas recibidas:");
     for (let p of listaP) {
-        console.log(p.nombre, p.fechaEstreno);
-
         let categoria = categorias.find(c => c.id == p.idCategoria);
 
-        html += `<ion-card color="dark">
-            <ion-card-header>
-                <ion-card-title>${p.nombre}</ion-card-title>
-            </ion-card-header>
+        html += `
+        <ion-item-sliding>
+            <ion-item>
+                <ion-label>
+                    <h2>${p.nombre}</h2>
+                    <p>Fecha: ${p.fechaEstreno}</p>
+                    <p>
+                        Categoría: ${categoria ? categoria.nombre : "Sin categoría"}
+                        ${categoria ? categoria.emoji : ""}
+                    </p>
+                </ion-label>
+            </ion-item>
 
-            <ion-card-content>
-                Fecha de estreno: ${p.fechaEstreno}<br>
-                Categoría: ${categoria ? categoria.nombre : "Sin categoría"} ${categoria ? categoria.emoji : ""}<br>
-                Edad requerida: ${categoria ? categoria.edad_requerida : "-"} años
-                <ion-button color="primary" slot="end" shape="round" onclick="EliminarPelicula('${p.id}')">Eliminar</ion-button>
-            </ion-card-content>
-        </ion-card>`;
+            <ion-item-options side="end">
+                <ion-item-option color="danger"
+                    onclick="EliminarPelicula('${p.id}')">
+                    Eliminar
+                </ion-item-option>
+            </ion-item-options>
+        </ion-item-sliding>
+    `;
     }
+
+    html += `</ion-list>`;
 
     document.querySelector("#lista-peliculas").innerHTML = html;
 }
@@ -509,12 +536,12 @@ function DatosPeliculaValidos(nombre, fecha, categoria) {
     return true;
 }
 
-async function EvaluarComentario(comentario){
+async function EvaluarComentario(comentario) {
     let response = await fetch(`${URL_BASE}genai`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            
+
         },
         body: JSON.stringify({
             prompt: comentario,
@@ -528,7 +555,7 @@ async function EvaluarComentario(comentario){
         return null;
     }
 
-    if(data.sentiment == "Negativo"){
+    if (data.sentiment == "Negativo") {
         return false;
     } else {
         return true;
@@ -588,7 +615,7 @@ async function EliminarPelicula(idp) {
     if (response.status == 200) {
         let data = await response.json();
         MostrarToast("Pelicula eliminada correctamente", 3000);
-        Navegar({ detail: { to: "/peliculas" } }); // Forzar recarga de la lista de películas
+        Navegar({ detail: { to: "/peliculas" } });
         return data.peliculas;
     } else {
         return null;

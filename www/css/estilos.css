@@ -2,7 +2,6 @@
 :root {
     --ion-color-scheme: dark;
 
-    /* Netflix Red */
     --ion-color-primary: #e50914;
     --ion-color-primary-rgb: 229, 9, 20;
     --ion-color-primary-contrast: #ffffff;
@@ -10,9 +9,30 @@
     --ion-color-primary-shade: #ca0812;
     --ion-color-primary-tint: #ea1f29;
 
-    /* Dark base */
+
     --ion-color-dark: #141414;
     --ion-color-medium: #2c2c2c;
+
+    /* ALERT */
+    --ion-alert-background: #1f1f1f;
+    --ion-alert-color: #ffffff;
+    --ion-alert-border-radius: 12px;
+
+    /* ALERT BUTTONS */
+    --ion-alert-button-color: #e50914;
+
+    /* RADIO (SELECT ALERT) */
+    --ion-color-step-850: #1f1f1f;
+    --ion-color-step-900: #ffffff;
+
+    /* TOAST */
+    --ion-toast-background: #1f1f1f;
+    --ion-toast-color: #ffffff;
+
+    /* LOADING */
+    --ion-loading-background: #1f1f1f;
+    --ion-loading-spinner-color: #e50914;
+    --ion-loading-color: #ffffff;
 }
 
 /* ===== DARK MODE BASE ===== */
@@ -58,7 +78,7 @@ ion-label {
     color: #ffffff;
 }
 
-/* Header de listas (ej: Estadísticas) */
+/* Header de listas*/
 body.dark ion-list-header {
     color: #ffffff;
     text-transform: uppercase;
@@ -97,38 +117,15 @@ ion-button {
     font-weight: 600;
 }
 
-/* ============================= */
-/* IONIC OVERLAYS – FIX REAL */
-/* ============================= */
 
-:root {
 
-  /* ALERT */
-  --ion-alert-background: #1f1f1f;
-  --ion-alert-color: #ffffff;
-  --ion-alert-border-radius: 12px;
 
-  /* ALERT BUTTONS */
-  --ion-alert-button-color: #e50914;
-
-  /* RADIO (SELECT ALERT) */
-  --ion-color-step-850: #1f1f1f;
-  --ion-color-step-900: #ffffff;
-
-  /* TOAST */
-  --ion-toast-background: #1f1f1f;
-  --ion-toast-color: #ffffff;
-
-  /* LOADING */
-  --ion-loading-background: #1f1f1f;
-  --ion-loading-spinner-color: #e50914;
-  --ion-loading-color: #ffffff;
-}
 .alert-wrapper.sc-ion-alert-ios {
     background: var(--ion-alert-background) !important;
     color: var(--ion-alert-color) !important;
     border-radius: var(--ion-alert-border-radius) !important;
 }
+
 .loading-wrapper.sc-ion-loading-ios {
     background: var(--ion-loading-background) !important;
     color: var(--ion-loading-color) !important;
