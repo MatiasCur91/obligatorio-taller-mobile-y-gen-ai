@@ -24,44 +24,79 @@ function Inicio() {
 
 function CargarMapa() {
 
-    setTimeout(function () { CrearMapa() }, 1000)
+    setTimeout(function () { CrearMapa() }, 100)
 }
 
 var map = null;
-function CrearMapa() {
+async function CrearMapa() {
 
     if (map != null) {
         map.remove();
     }
 
+    map = L.map('map').setView([-15, -60], 3);
 
-    map = L.map('map').setView([-34.89742018057002, -56.16433646022703], 14);
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         maxZoom: 19,
-        minZomm: 1,
-        attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        attribution: '&copy; OpenStreetMap'
     }).addTo(map);
 
-
-    var marker = L.marker([-34.89742018057002, -56.16433646022703]).addTo(map).bindPopup("<b>Obelisco</b><br>Montevideo");
-
-    var circle = L.circle([-34.89742018057002, -56.16433646022703], {
-        color: 'red',
-        fillColor: '#f03',
-        fillOpacity: 0.2,
-        radius: 500
-    }).addTo(map);
+    let paises = await ObtenerPaises();
+    let usuariosPorPais = await ObtenerUsuariosPorPais();
+    console.log("Paises:", paises);
+    console.log("Usuarios por país:", usuariosPorPais);
 
 
+    let contador = 0;
 
-    var polygon = L.polygon([
-        [-34.887232060982285, -56.15921630560929],
-        [-34.887576590810674, -56.171412955505495],
-        [-34.904852295863385, -56.169276573751084],
-        [-34.89723693213823, -56.14666147277048]
-    ]).addTo(map);
+    for (let u of usuariosPorPais) {
 
+        if (contador === 10) break;
+
+        let pais = null;
+
+        for (let p of paises) {
+            if (p.id === u.id) {
+                pais = p;
+                break;
+            }
+
+        }
+
+        if (pais && pais.latitud && pais.longitud) {
+             
+           var marker = L.marker([pais.latitud, pais.longitud])
+                .addTo(map)
+                .bindTooltip(
+                    `${pais.nombre}: ${u.cantidadDeUsuarios} usuarios`,
+                    { permanent: false }
+                );
+
+            contador++;
+        }
+    }
 }
+
+async function ObtenerUsuariosPorPais() {
+
+    let token = localStorage.getItem("token");
+
+    let response = await fetch(`${URL_BASE}usuariosPorPais`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': "Bearer " + token
+        }
+    });
+
+    if (response.status === 200) {
+        let data = await response.json();
+        return data.paises;
+    } else {
+        return null;
+    }
+}
+
 
 function ArmarMenu() {
 
