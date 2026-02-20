@@ -108,6 +108,7 @@ function ArmarMenu() {
         html += `
         <ion-item onclick="CerrarMenu()" href="/peliculas">Mis Peliculas</ion-item>
         <ion-item onclick="CerrarMenu()" href="/agregar-pelicula">Agregar Pelicula</ion-item>
+        <ion-item onclick="CerrarMenu()" href="/estadisticas">Estadísticas</ion-item>
         <ion-item onclick="CerrarMenu()" href="/mapa">Mapa</ion-item>
        <ion-item onclick="CerrarSesion()" >Logout</ion-item> `
 
@@ -127,14 +128,14 @@ function ArmarHome() {
     let html = ``;
 
     if (hayToken) {
-        html += ` <ion-button id="" href="/peliculas" expand="full">Peliculas</ion-button>
-        <ion-button id="" href="/mapa" expand="full">Mapa</ion-button>
-        <ion-button id="" onclick="CerrarSesion()" expand="full">Cerrar Sesión</ion-button>`
+        html += ` <ion-button id="" href="/peliculas" expand="block">Peliculas</ion-button>
+        <ion-button id="" href="/mapa" expand="block">Mapa</ion-button>
+        <ion-button id="" onclick="CerrarSesion()" expand="block">Cerrar Sesión</ion-button>`
         console.log("hay token");
 
     } else {
-        html = `   <ion-button id="" href="/login" expand="full">Login</ion-button>
-                <ion-button id="" href="/registro" expand="full">Registrarse</ion-button>`
+        html = `   <ion-button id="" href="/login" expand="block">Login</ion-button>
+                <ion-button id="" href="/registro" expand="block">Registrarse</ion-button>`
         console.log("no hay token");
     }
 
